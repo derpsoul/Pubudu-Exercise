@@ -1,5 +1,6 @@
 <head>
     <title>Pubudu Exercise</title>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
 </head>
 
 <body>
@@ -10,9 +11,64 @@
  
     <div id="top-bar">
         <input type="text" id="keyword-search" placeholder="search images">
+        <button id='load-images'>Load all images</button>
     </div>
-    <button id='load-images'>Load all images</button>
+    {{#if removedPages}}
+        <div id="showRemovedPages" >
+           
+        </div>
+    {{/if}}
+    <div class="center-wrapper">
+        <div id="image-part">
+            
+            {{#each pic}}
+                <div class="img-container">
+                    <div class="img" style="background: url({{ getDefaultImage this }})">
+                        
+                    </div>
+                    
+                    <div class="img-info">
+                         
+                    </div>
+                </div>
+            
+                
+            {{/each}}
+      
+       
+        
+        </div>
+    </div>
+    <div class="padder"></div>
+    
+    {{#if morePages}}
+        <div id="showMorePages" >
+       
+        </div>
+    {{/if}}
+    
+    
+    <div id="footer">
+        {{#if morePages}}
+            <div class='pager'>
+                {{#if firstPage}}
+                    <span class='pager-first pager-text  ' >FIRST</span>
+                {{/if}}
+                {{#each pager }}
+                    <span class='pager-normal pager-text {{#if isCurrPage}}pager-curr{{/if}}' >{{this}}</span>
+                {{/each}}
+                {{#if lastPage}}
+                    <span class='pager-last pager-text  ' >LAST</span>
+                {{/if}}
+            </div>
+        {{/if}}
+    
+    </div>
+   
  
  
     
 </template>
+
+
+ 
