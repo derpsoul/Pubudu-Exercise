@@ -48,6 +48,8 @@ Template.mainpage.helpers({
         }
     },
     morePages: function(){
+    console.log('urpage is', curPage);
+    console.log('totalpages is',  Session.get('totalPages'));
         if(curPage < Session.get('totalPages')){
             return true
         }
@@ -120,6 +122,7 @@ Template.mainpage.events({
         if(key.which == 13){ //if pressed return key
             Session.set('searching', $('#keyword-search').val());
             searchImages($('#keyword-search').val());
+            $('#keyword-search').blur(); /*remove focus from input to hide mobile keyboard automatically*/
         }
     },
     "keypress #pager-jump": function(key, template){
@@ -139,7 +142,7 @@ Template.mainpage.events({
         loadImages(1);
     },  
     "click .pager-last": function(){
-        loadImages(parseInt(Session.get('totalPages')));
+        loadImages(Session.get('totalPages'));
     },
     "click #load-images": function(){
         if(Session.get('searching') != false){
@@ -214,7 +217,7 @@ function loadImages(page){
     }else{
         //fetches json results from server in non-blocking manner with meteor call
         Meteor.call('fetchPics',page,Session.get('displayCount'), function(err, results){
-            Session.set('totalPages', results.data.photos.pages);
+            Session.set('totalPages', parseInt(results.data.photos.pages));
             Session.set('http_pics', results.data.photos.photo);
             curPage=page;
             Session.set('currentPage',curPage);
@@ -236,10 +239,12 @@ function searchImages(keyword,page){
     }
     
     Meteor.call('searchPics',keyword,page, function(err, results){
-        Session.set('totalPages', results.data.photos.pages);
-        Session.set('http_pics', results.data.photos.photo);
-        curPage=page;
-        Session.set('currentPage',curPage);
+        if(results){
+            Session.set('totalPages', parseInt(results.data.photos.pages));
+            Session.set('http_pics', results.data.photos.photo);
+            curPage=page;
+            Session.set('currentPage',curPage);
+        }
     });
 }
 
@@ -247,7 +252,7 @@ function searchImages(keyword,page){
 
 // whenever #showMorePages becomes visible, show the footer
 
-function showMoreVisible() {
+function scrollFunc() {
     if(scrollTimer != null){
         clearTimeout(scrollTimer);
     }
@@ -256,7 +261,7 @@ function showMoreVisible() {
         $('#top-bar').css('opacity',0.00);
     }
 
-    var threshold, target = $("#showMorePages");
+    var threshold, target = $("#nearBottom");
     if (!target.length) return;
  
     threshold = $(window).scrollTop() + $(window).height() ;
@@ -275,9 +280,7 @@ function showMoreVisible() {
         scrollTimer = setTimeout(function(){
         
             $('#footer').css('opacity',1.00);
-            if(!Meteor.Device.isDesktop()){
-                $('#top-bar').css('opacity',1.00);
-            }
+            $('#top-bar').css('opacity',1.00);
  
         }, time);
    
@@ -287,6 +290,6 @@ function showMoreVisible() {
 }
  
 //check whenever users scrolls if they have reached the bottom of the page
-$(window).scroll(showMoreVisible);
+$(window).scroll(scrollFunc);
 
  

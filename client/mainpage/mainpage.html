@@ -34,8 +34,8 @@
                     <span class="desc"> {{{clickedImage.photo.description._content}}}</span>
                 </div>
             </div>
-        
         </div>
+
     </div>
     {{/if}}
    
@@ -87,12 +87,9 @@
     <div class="padder"></div>
     
     <!-- used to detect if scrolled to bottom of the page -->
-    {{#if morePages}}
-        <div id="showMorePages" >
-       
-        </div>
-    {{/if}}
-    
+    <div id="nearBottom" >
+    </div>
+
     <!--footer & pager section -->
     <div id="footer">
         {{#if morePages}}
