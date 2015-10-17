@@ -336,7 +336,6 @@ a{
     }
     .img-info .title {
         font-size:40px;
- 
     }
 
     .padder{
@@ -350,4 +349,13 @@ a{
     .under-image .title{
         font-size:40px;
     }
+    
+    .img-opened{
+        width:80%;
+        height:auto;
+    }
+    .opened-options{
+        zoom: 160%;
+    }
+
 } 
