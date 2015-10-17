@@ -2,7 +2,10 @@
 ##A Nasa flickr image fetcher
 
 ####Running the app:
-TODO
+Demo is available here: pubx.meteor.com  
+(it may take awhile to start up based on last startup time)
+
+Or download the files and navigate the project folder and type *meteor run*.
 
  
 ####Main design idea:
@@ -21,9 +24,10 @@ template helpers.
     Uses 'word' flickr api argument, works on pressing enter. This updates the
     pager to reflect the search results as well as updates a session variable to 
     indicate the user has searched so if the user clicks a page on the pager it
-    will fetch pages based on the search. Causes 
+    will fetch pages based on the search.  
     
-    Search causes the images to display image titles also
+    Search causes the images to display image titles also.
+- Image descriptions + various sizes available after clicking on an image
  
   
 ###Additional meteor packages:
