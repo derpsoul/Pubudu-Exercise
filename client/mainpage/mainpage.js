@@ -1,10 +1,18 @@
 
+  
 var curPage = 0;
 
 Meteor.startup(function(){
     /*initialize with empty array or blaze's #each will throw errors*/
     var x= [];
     Session.set('http_pics', x); 
+    
+    $(document).on('keyup', function (event) {
+    
+        if(event.keyCode ==  27){ //if escape
+           Session.set('clickedImage', false); //close popup
+        }
+    });
 
 });
 
@@ -12,6 +20,7 @@ Meteor.startup(function(){
 Template.mainpage.onRendered(function () {
     Session.set('isLoaded',true);
     Session.set('searching', false);
+    Session.set('clickedImage', false);
     loadImages(1);
 
 
@@ -41,7 +50,8 @@ Template.mainpage.helpers({
         return Session.get('removedPages');
     },
     currentPage: function(){
-        console.log(this.value);
+    
+    
         return Session.get('currentPage');
     },
     firstPage: function(){
@@ -78,12 +88,29 @@ Template.mainpage.helpers({
     isCurrPage: function(){
         if(this == Session.get('currentPage'))
             return true;
+    },
+    searchOn: function(){
+        if(Session.get('searching') != false){
+            return true;
+        }
+        
+        return false;
+    },
+    clickedImage: function(){
+        var obj = Session.get('clickedImage');
+        if(obj != false){
+            console.log(this);
+            var urlDefault = 'https://farm' + obj.farm + '.staticflickr.com/' + obj.server + '/' + obj.id + '_' + obj.secret + '.jpg';
+            obj.url = urlDefault;
+            console.log(obj);
+            return obj
+        }
     }
  
 });
 
+ 
 Template.mainpage.events({
-
     "keypress #keyword-search": function(key, template){
        
         if(key.which == 13){ //if pressed return key
@@ -91,10 +118,17 @@ Template.mainpage.events({
             searchImages($('#keyword-search').val());
         }
     },
+    "keypress #pager-jump": function(key, template){
+        if(key.which == 13){ //if pressed return key
+            var num = parseInt($('#pager-jump').val());
+            if(!isNaN(num) && num >0 && num <= Session.get('totalPages'))
+                loadImages(num);
+        }
+    },
     "click .pager-normal": function(){
-        console.log(this);
-  
-            loadImages(parseInt(this));
+        var num = parseInt(this)
+        if(!isNaN(num) && num >0 && num <= Session.get('totalPages'))
+            loadImages(num)
      
     },
     "click .pager-first": function(){
@@ -108,50 +142,21 @@ Template.mainpage.events({
             Session.set('searching', false);
             loadImages(1);
         }
+    },
+    "mouseenter .img-container": function(event, template){
+        $(event.currentTarget.firstElementChild.firstElementChild).addClass("show");
+    },
+    "mouseleave .img-container": function(){
+        $(event.fromElement.firstElementChild.firstElementChild).removeClass("show");
+    },
+    "click .img-container": function(){
+        Session.set('clickedImage',this);
+   
+   
     }
 
 });
 
-/*when scrolling up restore any pages that were removed from the buffer*/
-function restoreImages(){
-    if(Session.get('removedPages')){
-        
-        Meteor.call('fetchPics',removedPages, function(err, results){
-            if(Session.get('http_pics').length > 0){
-                Session.set('http_pics', (results.data.photos.photo).concat(Session.get('http_pics')));
-                pagesInBuffer++;
-                removedPages--;
- 
-                if(removedPages <=0){
-                    Session.set('removedPages', false);
-                    removedPages=0;
-                }
-                
-                if(pagesInBuffer >= MAX_PAGES_LOADED){
-                    var imgArr = Session.get('http_pics');
-                    
-                    //remove half the pages from end of buffer
-                    //not necessary to keep track of items removed from end
-                    //since they will be loaded as user scrolls down anyway
-                    for(i=0; i<(PER_PAGE*REMOVE_COUNT)-1; i++){
-                        imgArr.pop();
-                    }
-                    Session.set('http_pics', imgArr);
-                }
-                
-                
-            }          
-            
-            
-          
-                $(window).scrollTop( 50 ); //leave small gap so user can keep scrolling up
-        });
-        
-     
-    
-    }
-
-}
 
 
 /*loads all images belonging to nasa, (defined in server) */
@@ -171,6 +176,9 @@ function loadImages(page){
         
         });
     }
+    
+    //move to the top of the page after loading new set of images
+    $(window).scrollTop(0);
 }
 
 /*searches images based on keyword*/
@@ -190,25 +198,40 @@ function searchImages(keyword,page){
 
 
 // whenever #showMorePages becomes visible, show the footer
+var scrollTimer = null;
 function showMoreVisible() {
-    var threshold, target = $("#showMorePages");
-    if (!target.length) return;
- 
-    threshold = $(window).scrollTop() + $(window).height() ;
-
-    if (target.offset().top-10 < threshold) { //gone below the showmorepages div
-       
-            $('#footer').css('opacity',1.00);
-      
-    } else {
-           
-            $('#footer').css('opacity',0.00);
+    if(scrollTimer != null){
+        clearTimeout(scrollTimer);
     }
+    $('#footer').css('opacity',0.00);
+    if( Session.get('clickedImage') !=false){ //hide popup when scrolling
+        Session.set('clickedImage',false)
+    }
+    scrollTimer = setTimeout(function(){
+    
+
+        
+        var threshold, target = $("#showMorePages");
+        if (!target.length) return;
+     
+        threshold = $(window).scrollTop() + $(window).height() ;
+
+        if (target.offset().top-10 < threshold) { //gone below the showmorepages div
+           
+                $('#footer').css('opacity',1.00);
+          
+        } else {
+               
+                $('#footer').css('opacity',1.00);
+                
+        }
+ 
+    }, 900);
+
  
 }
  
 //check whenever users scrolls if they have reached the bottom of the page
 $(window).scroll(showMoreVisible);
-
 
  

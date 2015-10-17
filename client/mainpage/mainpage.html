@@ -7,12 +7,30 @@
  
 </body>
 
+
+
 <template name="mainpage">
- 
-    <div id="top-bar">
-        <input type="text" id="keyword-search" placeholder="search images">
-        <button id='load-images'>Load all images</button>
+
+    {{#if clickedImage}}
+    <div class="opened-container">
+        <div class="image-details">
+            <div class="opened-image">
+                <img src="{{clickedImage.url}}">
+            </div>
+            <div class="under-image">
+                <span class="opened-title"> {{clickedImage.title}}</span>
+            </div>
+           
+        
+        </div>
     </div>
+    {{/if}}
+   
+    <div id="top-bar">
+        <input type="text" id="keyword-search" placeholder="Search images">
+        <button id="load-images" class='button' >Load all images</button>
+    </div>
+     <div class="padder"></div>
     {{#if removedPages}}
         <div id="showRemovedPages" >
            
@@ -23,13 +41,19 @@
             
             {{#each pic}}
                 <div class="img-container">
+     
                     <div class="img" style="background: url({{ getDefaultImage this }})">
-                        
+                        {{#if searchOn}}
+                            <div class="img-info">
+                                <span class="title">{{title}}</span>
+                            </div>
+                        {{else}}
+                            <div class="img-info hide">
+                                <span class="title">{{title}}</span>
+                            </div>
+                        {{/if}}
                     </div>
-                    
-                    <div class="img-info">
-                         
-                    </div>
+ 
                 </div>
             
                 
@@ -52,14 +76,15 @@
         {{#if morePages}}
             <div class='pager'>
                 {{#if firstPage}}
-                    <span class='pager-first pager-text  ' >FIRST</span>
+                    <span class='pager-first pager-text button ' >FIRST</span>
                 {{/if}}
                 {{#each pager }}
-                    <span class='pager-normal pager-text {{#if isCurrPage}}pager-curr{{/if}}' >{{this}}</span>
+                    <span class='pager-normal pager-text button {{#if isCurrPage}}pager-curr{{/if}}' >{{this}}</span>
                 {{/each}}
                 {{#if lastPage}}
-                    <span class='pager-last pager-text  ' >LAST</span>
+                    <span class='pager-last pager-text button ' >LAST</span>
                 {{/if}}
+                    <input type="text" id="pager-jump"  size="5" placeholder="Jump to page">
             </div>
         {{/if}}
     
@@ -69,6 +94,6 @@
  
     
 </template>
-
+ 
 
  
