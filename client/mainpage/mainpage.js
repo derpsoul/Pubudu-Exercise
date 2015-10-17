@@ -46,8 +46,6 @@ Template.mainpage.helpers({
         }
     },
     morePages: function(){
-    console.log('urpage is', curPage);
-    console.log('totalpages is',  Session.get('totalPages'));
         if(curPage < Session.get('totalPages')){
             return true
         }
