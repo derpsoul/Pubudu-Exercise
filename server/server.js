@@ -1,6 +1,6 @@
 var API_KEY="a5e95177da353f58113fd60296e1d250"; 
 var USER_ID="24662369@N07"; 
-var PER_PAGE= 30; /*TODO: change this to be based on the initial window  area of client*/
+var PER_PAGE= 50; 
 
 
 Meteor.startup(function () {

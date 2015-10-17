@@ -266,11 +266,17 @@ function showMoreVisible() {
             $('#footer').css('opacity',1.00);
       
     } else {
+        var time = 3000;
+        if(!Meteor.Device.isDesktop()){
+            time = 400; //show the pager sooner for mobile since they don't have
+                        //hover over option so they always have to scroll to the 
+                        //bottom or wait until the pager shows
+        }
         scrollTimer = setTimeout(function(){
         
             $('#footer').css('opacity',1.00);
  
-        }, 3000);
+        }, time);
    
     }
 

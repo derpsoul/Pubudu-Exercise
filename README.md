@@ -19,7 +19,10 @@ template helpers.
 ####Additional features:
 - Pager: 
     Appears when mouse hovering near the bottom of the window or user when 
-    user stops scrolling
+    user stops scrolling.
+    
+    Mobile can't  hover so instead pager will appear sooner when scrolling is
+    paused.
 - Search  
     Uses 'word' flickr api argument, works on pressing enter. This updates the
     pager to reflect the search results as well as updates a session variable to 
@@ -33,4 +36,4 @@ template helpers.
 ###Additional meteor packages:
 - http (for http requests)
 - iron router 
-
+- device detection
