@@ -1,5 +1,3 @@
-
-  
 var curPage = 0; /*keep track of the current page*/
 var scrollTimer = null; /*timer used in scroll event listener function*/
 
@@ -35,7 +33,7 @@ Template.mainpage.onRendered(function () {
  
 }); 
 
- 
+/*Template helpers, values passed on by helpers are updated live in our template*/ 
 Template.mainpage.helpers({
 
     pic: function(){
@@ -81,7 +79,6 @@ Template.mainpage.helpers({
         }else{
             current -= 3
         }
-        //TODO lower the number of pages for mobile/smaller widths
         for(i=current; i<current+7; i++){ //display 10 pages in pager
         
             if(i>Session.get('totalPages')){
@@ -147,7 +144,7 @@ Template.mainpage.events({
     "click #load-images": function(){
         if(Session.get('searching') != false){
             Session.set('searching', false);
-            loadImages(1);
+            loadImages(1); 
         }
         //clear the search box
          $('#keyword-search').val("");
@@ -212,7 +209,6 @@ Template.mainpage.events({
 function loadImages(page){
  
     if(Session.get('searching') != false){
-        
         searchImages(Session.get('searching'), page);
     }else{
         //fetches json results from server in non-blocking manner with meteor call
@@ -250,8 +246,7 @@ function searchImages(keyword,page){
 
 
 
-// whenever #showMorePages becomes visible, show the footer
-
+/*whenever #showMorePages becomes visible, show the footer*/
 function scrollFunc() {
     if(scrollTimer != null){
         clearTimeout(scrollTimer);
@@ -266,10 +261,8 @@ function scrollFunc() {
  
     threshold = $(window).scrollTop() + $(window).height() ;
 
-    if (target.offset().top-10 < threshold) { //gone below the showmorepages div
-       
-            $('#footer').css('opacity',1.00);
-      
+    if (target.offset().top-10 < threshold) { //gone below the nearBottom div
+        $('#footer').css('opacity',1.00);    
     } else {
         var time = 3000;
         if(!Meteor.Device.isDesktop()){
@@ -286,6 +279,7 @@ function scrollFunc() {
    
     }
 
+    
  
 }
  

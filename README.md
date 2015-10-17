@@ -2,10 +2,12 @@
 ##A Nasa flickr image fetcher
 
 ####Running the app:
-Demo is available here: pubx.meteor.com  
-(it may take awhile to start up based on last startup time)
+Demo is available here: [pubx.meteor.com](https://pubx.meteor.com) 
+(it may take awhile for initial start up if the server has been idle for awhile)
 
-Or download the files and navigate the project folder and type *meteor run*.
+Or download the files and navigate the project folder and type *meteor run* if
+you already have meteor installed.
+[Info on installing meteor can be found here](https://www.meteor.com/install)
 
  
 ####Main design idea:

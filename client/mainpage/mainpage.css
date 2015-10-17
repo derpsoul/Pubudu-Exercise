@@ -332,8 +332,6 @@ a{
 
 
 /*for smaller devices*/
-
- 
 @media screen and (max-width: 530px) {
    
     .image-details {
