@@ -15,7 +15,6 @@ Meteor.startup(function(){
         }
     }); 
     $(document).on('click', function (event) {
-        console.log(event);
         if(event.target.className == "image-details" || event.target.className == "opened-container" ){
             Session.set('clickedImage', false); //close popup
             $('body').css('overflow', 'scroll');
@@ -114,17 +113,7 @@ Template.mainpage.helpers({
             return obj;
  
         }
-    },
-    getDetails: function(imgObj){
-        Meteor.call('getDetails',obj.id,obj.secret, function(err, results){
-        
-            console.log('deets',results);
-            obj.details = results;
-            return obj;
-        });
-        return imgObj;
     }
- 
 });
 
  
@@ -167,10 +156,13 @@ Template.mainpage.events({
     "mouseenter .img-container": function(event, template){
         if(Session.get('isLoaded'))
         $(event.currentTarget.firstElementChild.firstElementChild).addClass("show");
+        $('body').css( 'cursor', 'pointer' );
+
     },
     "mouseleave .img-container": function(event, template){
         if(Session.get('isLoaded'))
         $(event.fromElement.firstElementChild.firstElementChild).removeClass("show");
+         $('body').css( 'cursor', 'auto' );
     },
     "click .img-container": function(){
         var img =this;
@@ -178,14 +170,38 @@ Template.mainpage.events({
             Meteor.call('getDetails',img.id,img.secret, function(err, results){
             
                 img.photo = results.data.photo;
-                console.log('img', img);
+                Session.set('clickedImage',img);
+                $('body').css('overflow', 'hidden');
+            });
+            
+            Meteor.call('getSizes',img.id,img.secret, function(err, results){
+                var sizeArr = results.data.sizes.size
+                if(sizeArr[sizeArr.length-1].label == "Original"){
+                    img.original = sizeArr[sizeArr.length-1].source;
+                }
+                
+                if(sizeArr[sizeArr.length-4].label == "Large"){
+                    img.large = sizeArr[sizeArr.length-4].source;
+                }
+ 
                 Session.set('clickedImage',img);
                 $('body').css('overflow', 'hidden');
             });
         }
   
    
-    }
+    },
+    "click .close-img": function(){
+        Session.set('clickedImage', false); //close popup
+        $('body').css('overflow', 'scroll');
+    },
+    "click .larger-img": function(){
+        window.open(Session.get('clickedImage').large, Session.get('clickedImage').title)
+    },
+    "click .original-img": function(){
+        window.open(Session.get('clickedImage').original, Session.get('clickedImage').title)
+    },
+    
 
 });
 
@@ -199,7 +215,6 @@ function loadImages(page){
     }else{
         //fetches json results from server in non-blocking manner with meteor call
         Meteor.call('fetchPics',page,Session.get('displayCount'), function(err, results){
-            //console.log(results.data.photos);
             Session.set('totalPages', results.data.photos.pages);
             Session.set('http_pics', results.data.photos.photo);
             curPage=page;

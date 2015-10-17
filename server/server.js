@@ -32,6 +32,11 @@ Meteor.methods({
         var additional= "&photo_id="+id+"&secret="+secret;
         var url ="https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key="+API_KEY+"&user_id="+USER_ID+additional+"&format=json&nojsoncallback=1";
         return  Meteor.http.call('GET', url);
+    },
+    getSizes: function(id){
+        var additional= "&photo_id="+id;
+        var url ="https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key="+API_KEY+"&user_id="+USER_ID+additional+"&format=json&nojsoncallback=1";
+        return  Meteor.http.call('GET', url);
     }
 
  

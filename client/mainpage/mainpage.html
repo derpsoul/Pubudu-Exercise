@@ -16,7 +16,18 @@
         <div class="image-details">
             <div class="details-container">
                 <div class="opened-image">
+
                     <img class="img-opened" src="{{clickedImage.url}}">
+                    <div class="opened-options">
+                        <span class="close-img button"> Close</span><br>
+                        {{#if clickedImage.large}}
+                        <span class="larger-img button"> Larger</span><br>
+                        {{/if}}
+                        
+                        {{#if clickedImage.original}}
+                        <span class="original-img button"> Original</span><br>
+                        {{/if}}
+                    </div>
                 </div>
                 <div class="under-image">
                     <span class="title"> {{clickedImage.title}}</span><br>
