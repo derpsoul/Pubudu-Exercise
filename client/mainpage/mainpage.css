@@ -98,7 +98,7 @@ a{
 }
 
 #footer:hover{
-    opacity: 1.0 !important;
+    opacity: 1.0;
     -moz-transition:    opacity .4s linear;
 	-webkit-transition: opacity .4s linear;
 	-o-transition:      opacity .4s linear;
@@ -119,7 +119,7 @@ a{
 .img-container{
     padding:5px;
     display: inline-block;
-    
+    cursor:pointer;
 }
 
 .img-container:hover{
@@ -200,19 +200,20 @@ a{
     cursor:pointer;
     padding:10px;
     background-color: #000;
-    opacity:0.9;
+     
     font-family: 'Montserrat', sans-serif;
     display: inline-block;
     margin-top: 2px;
 }
 
-.pager-text:hover{
+
+/*.pager-text:hover{
     -moz-transition:    opacity .2s linear;
 	-webkit-transition: opacity .2s linear;
 	-o-transition:      opacity .2s linear;
 	transition:         opacity .2s linear;
-    opacity:1.0;
-}
+    
+}*/
 
 .pager-curr{
     background: #57787B;

@@ -1,7 +1,7 @@
 
   
 var curPage = 0;
-
+var scrollTimer = null;
 Meteor.startup(function(){
     /*initialize with empty array or blaze's #each will throw errors*/
     var x= [];
@@ -44,8 +44,10 @@ Template.mainpage.helpers({
         return Session.get('http_pics');
     },
     getDefaultImage: function(imgObj){ 
-        var urlDefault = 'https://farm' + imgObj.farm + '.staticflickr.com/' + imgObj.server + '/' + imgObj.id + '_' + imgObj.secret + '.jpg';
-        return urlDefault;
+        if(imgObj){
+            var urlDefault = 'https://farm' + imgObj.farm + '.staticflickr.com/' + imgObj.server + '/' + imgObj.id + '_' + imgObj.secret + '.jpg';
+            return urlDefault;
+        }
     },
     morePages: function(){
         if(curPage < Session.get('totalPages')){
@@ -136,10 +138,10 @@ Template.mainpage.events({
         var num = parseInt(this)
         if(!isNaN(num) && num >0 && num <= Session.get('totalPages'))
             loadImages(num)
-     
+
     },
     "click .pager-first": function(){
-        loadImages(1);
+         loadImages(1);
     },  
     "click .pager-last": function(){
         loadImages(parseInt(Session.get('totalPages')));
@@ -156,9 +158,7 @@ Template.mainpage.events({
     "mouseenter .img-container": function(event, template){
  
         if(Session.get('isLoaded')){
-            console.log('enter event', event)
-            $(event.currentTarget.firstElementChild.firstElementChild).addClass("show");
-          
+             $(event.currentTarget.firstElementChild.firstElementChild).addClass("show");
         }
     },
     "mouseleave .img-container": function(event, template){
@@ -215,6 +215,7 @@ Template.mainpage.events({
 
 /*loads all images belonging to nasa, (defined in server) */
 function loadImages(page){
+ 
     if(Session.get('searching') != false){
         
         searchImages(Session.get('searching'), page);
@@ -232,6 +233,7 @@ function loadImages(page){
     
     //move to the top of the page after loading new set of images
     $(window).scrollTop(0);
+ 
 }
 
 /*searches images based on keyword*/
@@ -251,7 +253,7 @@ function searchImages(keyword,page){
 
 
 // whenever #showMorePages becomes visible, show the footer
-var scrollTimer = null;
+
 function showMoreVisible() {
     if(scrollTimer != null){
         clearTimeout(scrollTimer);

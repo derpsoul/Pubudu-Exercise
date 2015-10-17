@@ -89,13 +89,13 @@
         {{#if morePages}}
             <div class='pager'>
                 {{#if firstPage}}
-                    <span class='pager-first pager-text button ' >FIRST</span>
+                    <span class='pager-first pager-text ' >FIRST</span>
                 {{/if}}
                 {{#each pager }}
-                    <span class='pager-normal pager-text button {{#if isCurrPage}}pager-curr{{/if}}' >{{this}}</span>
+                    <span class='pager-normal pager-text {{#if isCurrPage}}pager-curr{{/if}}' >{{this}}</span>
                 {{/each}}
                 {{#if lastPage}}
-                    <span class='pager-last pager-text button ' >LAST</span>
+                    <span class='pager-last pager-text' >LAST</span>
                 {{/if}}
                     <input type="text" id="pager-jump"  size="5" placeholder="Jump to page">
             </div>
