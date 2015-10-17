@@ -11,7 +11,16 @@ Meteor.startup(function(){
     
         if(event.keyCode ==  27){ //if escape
            Session.set('clickedImage', false); //close popup
+           $('body').css('overflow', 'scroll');
         }
+    }); 
+    $(document).on('click', function (event) {
+        console.log(event);
+        if(event.target.className == "image-details" || event.target.className == "opened-container" ){
+            Session.set('clickedImage', false); //close popup
+            $('body').css('overflow', 'scroll');
+        }
+ 
     });
 
 });
@@ -99,12 +108,21 @@ Template.mainpage.helpers({
     clickedImage: function(){
         var obj = Session.get('clickedImage');
         if(obj != false){
-            console.log(this);
+ 
             var urlDefault = 'https://farm' + obj.farm + '.staticflickr.com/' + obj.server + '/' + obj.id + '_' + obj.secret + '.jpg';
             obj.url = urlDefault;
-            console.log(obj);
-            return obj
+            return obj;
+ 
         }
+    },
+    getDetails: function(imgObj){
+        Meteor.call('getDetails',obj.id,obj.secret, function(err, results){
+        
+            console.log('deets',results);
+            obj.details = results;
+            return obj;
+        });
+        return imgObj;
     }
  
 });
@@ -142,16 +160,30 @@ Template.mainpage.events({
             Session.set('searching', false);
             loadImages(1);
         }
+        //clear the search box
+         $('#keyword-search').val("");
+        
     },
     "mouseenter .img-container": function(event, template){
+        if(Session.get('isLoaded'))
         $(event.currentTarget.firstElementChild.firstElementChild).addClass("show");
     },
-    "mouseleave .img-container": function(){
+    "mouseleave .img-container": function(event, template){
+        if(Session.get('isLoaded'))
         $(event.fromElement.firstElementChild.firstElementChild).removeClass("show");
     },
     "click .img-container": function(){
-        Session.set('clickedImage',this);
-   
+        var img =this;
+        if (img.id != null){
+            Meteor.call('getDetails',img.id,img.secret, function(err, results){
+            
+                img.photo = results.data.photo;
+                console.log('img', img);
+                Session.set('clickedImage',img);
+                $('body').css('overflow', 'hidden');
+            });
+        }
+  
    
     }
 
@@ -204,29 +236,25 @@ function showMoreVisible() {
         clearTimeout(scrollTimer);
     }
     $('#footer').css('opacity',0.00);
-    if( Session.get('clickedImage') !=false){ //hide popup when scrolling
-        Session.set('clickedImage',false)
-    }
-    scrollTimer = setTimeout(function(){
-    
 
-        
-        var threshold, target = $("#showMorePages");
-        if (!target.length) return;
-     
-        threshold = $(window).scrollTop() + $(window).height() ;
 
-        if (target.offset().top-10 < threshold) { //gone below the showmorepages div
-           
-                $('#footer').css('opacity',1.00);
-          
-        } else {
-               
-                $('#footer').css('opacity',1.00);
-                
-        }
+    var threshold, target = $("#showMorePages");
+    if (!target.length) return;
  
-    }, 900);
+    threshold = $(window).scrollTop() + $(window).height() ;
+
+    if (target.offset().top-10 < threshold) { //gone below the showmorepages div
+       
+            $('#footer').css('opacity',1.00);
+      
+    } else {
+        scrollTimer = setTimeout(function(){
+        
+            $('#footer').css('opacity',1.00);
+ 
+        }, 600);
+   
+    }
 
  
 }

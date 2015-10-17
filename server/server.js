@@ -27,6 +27,11 @@ Meteor.methods({
         var url ="https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key="+API_KEY+"&user_id="+USER_ID+additional+"&format=json&nojsoncallback=1";
         return  Meteor.http.call('GET', url);
         
+    },
+    getDetails: function(id,secret){
+        var additional= "&photo_id="+id+"&secret="+secret;
+        var url ="https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key="+API_KEY+"&user_id="+USER_ID+additional+"&format=json&nojsoncallback=1";
+        return  Meteor.http.call('GET', url);
     }
 
  

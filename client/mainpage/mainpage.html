@@ -14,13 +14,15 @@
     {{#if clickedImage}}
     <div class="opened-container">
         <div class="image-details">
-            <div class="opened-image">
-                <img src="{{clickedImage.url}}">
+            <div class="details-container">
+                <div class="opened-image">
+                    <img class="img-opened" src="{{clickedImage.url}}">
+                </div>
+                <div class="under-image">
+                    <span class="title"> {{clickedImage.title}}</span><br>
+                    <span class="desc"> {{{clickedImage.photo.description._content}}}</span>
+                </div>
             </div>
-            <div class="under-image">
-                <span class="opened-title"> {{clickedImage.title}}</span>
-            </div>
-           
         
         </div>
     </div>
