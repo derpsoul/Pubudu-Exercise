@@ -21,14 +21,16 @@ Meteor.startup(function(){
         }
  
     });
+    
+    Session.set('isLoaded',false);
+    Session.set('searching', false);
+    Session.set('clickedImage', false);
 
 });
 
 
 Template.mainpage.onRendered(function () {
     Session.set('isLoaded',true);
-    Session.set('searching', false);
-    Session.set('clickedImage', false);
     loadImages(1);
 
 
