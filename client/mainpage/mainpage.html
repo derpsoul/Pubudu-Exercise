@@ -5,32 +5,30 @@
 
 </head>
 
-<body>
- 
-</body>
 
 
 
 <template name="mainpage">
 
-    {{#if clickedImage}}
+    {{#if clickedImage}} <!-- pop up image section -->
     <div class="opened-container">
         <div class="image-details">
             <div class="details-container">
                 <div class="opened-image">
 
-                    <img class="img-opened" src="{{clickedImage.url}}">
+                    <img src="{{clickedImage.url}}">
                     <div class="opened-options">
-                        <span class="close-img button"> Close</span><br>
+                        <span class="close-img button"> Close</span>
                         {{#if clickedImage.large}}
-                        <span class="larger-img button"> Larger</span><br>
+                        <span class="larger-img button"> Larger</span>
                         {{/if}}
                         
                         {{#if clickedImage.original}}
-                        <span class="original-img button"> Original</span><br>
+                        <span class="original-img button"> Original</span>
                         {{/if}}
                     </div>
                 </div>
+                
                 <div class="under-image">
                     <span class="title"> {{clickedImage.title}}</span><br>
                     <span class="desc"> {{{clickedImage.photo.description._content}}}</span>
@@ -41,23 +39,23 @@
     </div>
     {{/if}}
    
-    <div id="top-bar">
+    <!-- top bar (header/nav) section -->
+    <div id="top-bar" class="{{#unless isDesktop}}persistent{{/unless}}">
         <div class="logo">
             <span class="logo-main">SPACE</span><br>
             <span class="logo-sub">the final frontier</span>
         </div>
         <div class="top-opts">
             <button id="load-images" class='button' >Load all images</button>
-            <input type="text" id="keyword-search" placeholder="Search images">
+            <input type="text" id="keyword-search" size="15" placeholder="Search images">
         </div>
 
     </div>
-     <div class="padder"></div>
-    {{#if removedPages}}
-        <div id="showRemovedPages" >
-           
-        </div>
-    {{/if}}
+    {{#unless isDesktop}}
+        <div class="padder"></div> <!--padder needed in order to compensate for the persistent top-bar -->
+    {{/unless}}
+   
+    <!--main images section-->
     <div class="center-wrapper">
         <div id="image-part">
             
@@ -85,26 +83,28 @@
         
         </div>
     </div>
+    
     <div class="padder"></div>
     
+    <!-- used to detect if scrolled to bottom of the page -->
     {{#if morePages}}
         <div id="showMorePages" >
        
         </div>
     {{/if}}
     
-    
+    <!--footer & pager section -->
     <div id="footer">
         {{#if morePages}}
             <div class='pager'>
                 {{#if firstPage}}
-                    <span class='pager-first pager-text ' >FIRST</span>
+                    <span class='pager-first pager-text button ' >FIRST</span>
                 {{/if}}
                 {{#each pager }}
-                    <span class='pager-normal pager-text {{#if isCurrPage}}pager-curr{{/if}}' >{{this}}</span>
+                    <span class='pager-normal pager-text button {{#if isCurrPage}}pager-curr{{/if}}' >{{this}}</span>
                 {{/each}}
                 {{#if lastPage}}
-                    <span class='pager-last pager-text' >LAST</span>
+                    <span class='pager-last pager-text button' >LAST</span>
                 {{/if}}
                     <input type="text" id="pager-jump"  size="5" placeholder="Jump to page">
             </div>

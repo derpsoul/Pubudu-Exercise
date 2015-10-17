@@ -54,9 +54,6 @@ Template.mainpage.helpers({
         
         return false
     },
-    removedPages: function(){
-        return Session.get('removedPages');
-    },
     currentPage: function(){
     
     
@@ -255,7 +252,9 @@ function showMoreVisible() {
         clearTimeout(scrollTimer);
     }
     $('#footer').css('opacity',0.00);
-
+    if(!Meteor.Device.isDesktop()){
+        $('#top-bar').css('opacity',0.00);
+    }
 
     var threshold, target = $("#showMorePages");
     if (!target.length) return;
@@ -269,13 +268,16 @@ function showMoreVisible() {
     } else {
         var time = 3000;
         if(!Meteor.Device.isDesktop()){
-            time = 400; //show the pager sooner for mobile since they don't have
+            time = 600; //show the pager sooner for mobile since they don't have
                         //hover over option so they always have to scroll to the 
                         //bottom or wait until the pager shows
         }
         scrollTimer = setTimeout(function(){
         
             $('#footer').css('opacity',1.00);
+            if(!Meteor.Device.isDesktop()){
+                $('#top-bar').css('opacity',1.00);
+            }
  
         }, time);
    
