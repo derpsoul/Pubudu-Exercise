@@ -154,16 +154,22 @@ Template.mainpage.events({
         
     },
     "mouseenter .img-container": function(event, template){
-        if(Session.get('isLoaded'))
-        $(event.currentTarget.firstElementChild.firstElementChild).addClass("show");
-        $('body').css( 'cursor', 'pointer' );
-
+ 
+        if(Session.get('isLoaded')){
+            console.log('enter event', event)
+            $(event.currentTarget.firstElementChild.firstElementChild).addClass("show");
+          
+        }
     },
     "mouseleave .img-container": function(event, template){
-        if(Session.get('isLoaded'))
-        $(event.fromElement.firstElementChild.firstElementChild).removeClass("show");
-         $('body').css( 'cursor', 'auto' );
-    },
+    
+        if(Session.get('isLoaded')){
+            if(event.currentTarget){
+                $(event.currentTarget.firstElementChild.firstElementChild).removeClass("show")
+            }
+ 
+        }
+     },
     "click .img-container": function(){
         var img =this;
         if (img.id != null){
