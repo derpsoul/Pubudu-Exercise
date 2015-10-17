@@ -1,7 +1,8 @@
 
   
-var curPage = 0;
-var scrollTimer = null;
+var curPage = 0; /*keep track of the current page*/
+var scrollTimer = null; /*timer used in scroll event listener function*/
+
 Meteor.startup(function(){
     /*initialize with empty array or blaze's #each will throw errors*/
     var x= [];
@@ -22,7 +23,7 @@ Meteor.startup(function(){
  
     });
     
-    Session.set('isLoaded',false);
+
     Session.set('searching', false);
     Session.set('clickedImage', false);
 
@@ -30,18 +31,13 @@ Meteor.startup(function(){
 
 
 Template.mainpage.onRendered(function () {
-    Session.set('isLoaded',true);
-    loadImages(1);
-
-
+    loadImages(1); //on initial load the first page, change this if taking page as url parameter
+ 
 }); 
 
  
 Template.mainpage.helpers({
 
-    loaded: function(){
-        return Session.get('isLoaded');
-    },
     pic: function(){
         return Session.get('http_pics');
     },
@@ -143,7 +139,7 @@ Template.mainpage.events({
 
     },
     "click .pager-first": function(){
-         loadImages(1);
+        loadImages(1);
     },  
     "click .pager-last": function(){
         loadImages(parseInt(Session.get('totalPages')));
@@ -158,20 +154,17 @@ Template.mainpage.events({
         
     },
     "mouseenter .img-container": function(event, template){
- 
-        if(Session.get('isLoaded')){
-             $(event.currentTarget.firstElementChild.firstElementChild).addClass("show");
-        }
+        $(event.currentTarget.firstElementChild.firstElementChild).addClass("show");
     },
     "mouseleave .img-container": function(event, template){
-    
-        if(Session.get('isLoaded')){
-            if(event.currentTarget){
-                $(event.currentTarget.firstElementChild.firstElementChild).removeClass("show")
-            }
- 
+        if(event.currentTarget){
+            $(event.currentTarget.firstElementChild.firstElementChild).removeClass("show")
         }
+ 
      },
+    "mouseenter #footer": function(){
+        $("#footer").css('opacity',1.00);
+    },
     "click .img-container": function(){
         var img =this;
         if (img.id != null){
@@ -277,7 +270,7 @@ function showMoreVisible() {
         
             $('#footer').css('opacity',1.00);
  
-        }, 600);
+        }, 3000);
    
     }
 
