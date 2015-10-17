@@ -221,13 +221,14 @@ function loadImages(page){
             Session.set('http_pics', results.data.photos.photo);
             curPage=page;
             Session.set('currentPage',curPage);
-     
+             //move to the top of the page after loading new set of images
+            $(window).scrollTop(0);   
+
         
         });
     }
     
-    //move to the top of the page after loading new set of images
-    $(window).scrollTop(0);
+
  
 }
 
