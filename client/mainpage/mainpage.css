@@ -21,10 +21,12 @@ body,html{
     width:100%;
 }
 
+.button{
+    cursor:pointer;
+}
  
 .button:hover{
     background-color:#4E979E !important;
-    cursor:pointer;
 }
 
 a{
