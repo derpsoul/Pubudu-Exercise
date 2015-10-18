@@ -125,6 +125,9 @@ Template.mainpage.events({
             var num = parseInt($('#pager-jump').val());
             if(!isNaN(num) && num >0 && num <= Session.get('totalPages'))
                 loadImages(num);
+                
+            $('#pager-jump').blur(); /*remove focus from input to hide mobile keyboard automatically*/
+    
         }
     },
     "click .pager-normal": function(){
@@ -206,6 +209,7 @@ Template.mainpage.events({
 /*loads all images belonging to nasa, (defined in server) */
 function loadImages(page){
  
+
     if(Session.get('searching') != false){
         searchImages(Session.get('searching'), page);
     }else{
@@ -215,9 +219,12 @@ function loadImages(page){
             Session.set('http_pics', results.data.photos.photo);
             curPage=page;
             Session.set('currentPage',curPage);
-             //move to the top of the page after loading new set of images
+            
+            //move to the top of the page after loading new set of images
             $(window).scrollTop(0);   
-
+            
+            //replace placeholder message for jump page
+            $('#pager-jump').val('')
         
         });
     }
